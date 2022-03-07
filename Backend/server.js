@@ -18,11 +18,23 @@ const xodata = {
     history: JSON.stringify(Array(9).fill(null)),
     stepnumber: 0,
     xisnext: 1
-  };
+};
 
-xo.create(xodata)
+async function createTable(){
 
-db.sequelize.sync();
+    await db.sequelize.sync();
+
+    if (await xo.findByPk(1)) {
+        console.log("already have table")
+        // console.log(xo.findByPk(1))
+    } else{
+        console.log("create table success")
+        await xo.create(xodata)
+    }
+}
+// xo.create(xodata)
+
+createTable();
 
 
 app.get("/", (req, res) => {
