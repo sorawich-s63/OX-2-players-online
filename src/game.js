@@ -2,8 +2,10 @@ import React from 'react';
 import './index.css';
 import Board from './board'
 import CalculateWinner from './CalculateWinner';
+import XODataservice from './xo.service';
 
 class Game extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
