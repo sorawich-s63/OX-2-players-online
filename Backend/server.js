@@ -1,5 +1,3 @@
-
-
 const express = require("express");
 const cors = require("cors");
 
@@ -21,6 +19,7 @@ const xodata = {
     stepnumber: 0,
     xisnext: 1
   };
+
 xo.create(xodata)
 
 db.sequelize.sync();

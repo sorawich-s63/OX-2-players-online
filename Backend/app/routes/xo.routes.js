@@ -3,8 +3,8 @@ module.exports = app => {
     
     var router = require("express").Router();
 
-    router.post("/",xo.create);
-    router.get("/", xo.findAll);
+    router.put("/", xo.update);
+    router.get("/", xo.findOne);
     router.delete("/", xo.deleteAll);
 
     app.use('/api/xo', router);
