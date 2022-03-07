@@ -32,6 +32,28 @@ class Game extends React.Component {
         });
     }
 
+    setplayer(i) {
+        this.setState({
+            player : i 
+        });
+    }
+
+    buttonplayer(){
+        if(this.state.player==null){
+        return(
+            <div>
+            <button onClick={() => this.setplayer(true)} >X</button> <button onClick={() => this.setplayer(false)} >O</button>
+            </div>
+        );
+        }else{
+            return(
+                <div>
+                <label>You are "{this.state.player ? "X" : "O"}" player</label>
+                </div>
+            );
+        }
+    }
+
     jumpTo(step) {
         this.setState({
             stepNumber: step,
@@ -63,6 +85,12 @@ class Game extends React.Component {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
         return (
+            <div>
+                <label>SELECT PLAYER</label>
+                <br></br>
+                {this.buttonplayer()}
+                <br></br>
+            
             <div className="game">
                 <div className="game-board">
                 <Board 
@@ -72,8 +100,8 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                 <div>{status}</div>
-                <ol>{moves}</ol>
                 </div>
+            </div>
             </div>
         );
     }
