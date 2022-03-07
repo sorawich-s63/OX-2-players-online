@@ -20,6 +20,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.todo = require("./xoapp.model.js")(sequelize, Sequelize);
+db.xo = require("./xoapp.model.js")(sequelize, Sequelize);
 
 module.exports = db;

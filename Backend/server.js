@@ -1,3 +1,5 @@
+
+
 const express = require("express");
 const cors = require("cors");
 
@@ -12,6 +14,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
+
+const xo = db.xo;
+const xodata = {
+    history: JSON.stringify(Array(9).fill(null)),
+    stepnumber: 0,
+    xisnext: 1
+  };
+xo.create(xodata)
 
 db.sequelize.sync();
 
