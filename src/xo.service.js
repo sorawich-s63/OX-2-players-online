@@ -1,6 +1,6 @@
 import http from "./http-common";
 
-class TodoDataService {
+class XODataService {
     getAll() {
         return http.get("/xo");
     }
@@ -9,10 +9,6 @@ class TodoDataService {
         return http.put(`/xo`, data);
     }
 
-    deleteAll() {
-        return http.delete(`/xo`);
-    }
-
 }
 
-export default new TodoDataService();
+export default new XODataService();

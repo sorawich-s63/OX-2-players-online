@@ -60,6 +60,8 @@ class Game extends React.Component {
         this.retrieve();
     }
 
+    
+
     buttonplayer(){
         if(this.state.player==null){
         return(
@@ -76,6 +78,16 @@ class Game extends React.Component {
         }
     }
 
+    restart() {
+        var data = {
+            history: JSON.stringify(Array(9).fill(null)),
+            stepnumber: 0,
+            xisnext: true
+        }
+        console.log("restart ")
+        XODataService.update(data);
+    }
+
     retrieve() {
         if(this.state.player == this.state.xIsNext){
         XODataService.getAll()
@@ -86,7 +98,6 @@ class Game extends React.Component {
                     stepNumber: parseInt(alldata.stepnumber),
                     xIsNext: alldata.xisnext
                 });
-                console.log(this.state);
             
             })
             
@@ -105,7 +116,6 @@ class Game extends React.Component {
                     stepNumber: parseInt(alldata.stepnumber),
                     xIsNext: alldata.xisnext
                 });
-                console.log(this.state);
             
             })
             
@@ -131,6 +141,11 @@ class Game extends React.Component {
                 <br></br>
                 {this.buttonplayer()}
                 <br></br>
+            <div>
+                <br></br>
+                <button onClick={() => this.restart()} > Restart </button>
+                <br></br>
+
             
             <div className="game">
                 <div className="game-board">
@@ -142,6 +157,7 @@ class Game extends React.Component {
                 <div className="game-info">
                 <div>{status}</div>
                 </div>
+            </div>
             </div>
             </div>
         );

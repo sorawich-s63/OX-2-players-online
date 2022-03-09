@@ -18,30 +18,31 @@ const xodata = {
     history: JSON.stringify(Array(9).fill(null)),
     stepnumber: 0,
     xisnext: 1
-};
+  };
 
+//xo.create(xodata)
+
+//db.sequelize.sync();
 async function createTable(){
+await db.sequelize.sync();
 
-    await db.sequelize.sync();
-
-    if (await xo.findByPk(1)) {
-        console.log("already have table")
-        // console.log(xo.findByPk(1))
-    } else{
-        console.log("create table success")
-        await xo.create(xodata)
-    }
+if (await xo.findByPk(1)) {
+    console.log("already have table")
+    // console.log(xo.findByPk(1))
+} else{
+    console.log("create table success")
+    await xo.create(xodata)
 }
-// xo.create(xodata)
-
+}
 createTable();
+// xo.create(xodata)
 
 
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to XO-APP."});
 });
 
-// require("./app/routes/todo.routes")(app);
+require("./app/routes/xo.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

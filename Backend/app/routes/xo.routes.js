@@ -1,11 +1,10 @@
 module.exports = app => {
-    const xo = require("../controllers/xo.controller.js");
+    const xo = require("../controllers/xo.controllers.js");
     
     var router = require("express").Router();
 
-    router.put("/", xo.update);
     router.get("/", xo.findOne);
-    router.delete("/", xo.deleteAll);
+    router.put("/", xo.update);
 
     app.use('/api/xo', router);
 };
