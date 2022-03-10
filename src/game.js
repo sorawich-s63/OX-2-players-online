@@ -23,13 +23,10 @@ class Game extends React.Component {
             stepnumber: this.state.stepNumber,
             xisnext: next
         }
-        //console.log("click ",this.state.xIsNext)
         XODataService.update(data);
-        this.retrieve()
     }
 
     handleClick(i) {
-
         if(this.state.player == this.state.xIsNext)
         {
             const step = this.state.stepNumber + 1;
@@ -48,31 +45,27 @@ class Game extends React.Component {
             });
             
             this.updatedb(next)
-            
         }
-        
     }
 
     setplayer(i) {
         this.setState({
             player : i 
         });
-        this.retrieve();
     }
-
-    
 
     buttonplayer(){
         if(this.state.player==null){
-        return(
-            <div>
-            <button onClick={() => this.setplayer(true)} >X</button> <button onClick={() => this.setplayer(false)} >O</button>
-            </div>
-        );
+            return(
+                <div>
+                    <button onClick={() => this.setplayer(true)} >X</button> 
+                    <button onClick={() => this.setplayer(false)} >O</button>
+                </div>
+            );
         }else{
             return(
                 <div>
-                <label>You are "{this.state.player ? "X" : "O"}" player</label>
+                    <label>You are "{this.state.player ? "X" : "O"}" player</label>
                 </div>
             );
         }
@@ -84,12 +77,11 @@ class Game extends React.Component {
             stepnumber: 0,
             xisnext: true
         }
-        console.log("restart ")
         XODataService.update(data);
     }
 
     retrieve() {
-        if(this.state.player == this.state.xIsNext){
+        console.log("hi")
         XODataService.getAll()
             .then(response => {
                 const alldata = response.data
@@ -98,25 +90,6 @@ class Game extends React.Component {
                     stepNumber: parseInt(alldata.stepnumber),
                     xIsNext: alldata.xisnext
                 });
-            
-            })
-            
-            .catch(e => {
-                console.log(e);
-            });
-        }
-    }
-
-    retrieve1() {
-        XODataService.getAll()
-            .then(response => {
-                const alldata = response.data
-                this.setState({
-                    squares: JSON.parse(alldata.history),
-                    stepNumber: parseInt(alldata.stepnumber),
-                    xIsNext: alldata.xisnext
-                });
-            
             })
             
             .catch(e => {
@@ -124,10 +97,10 @@ class Game extends React.Component {
             });
     }
 
-      
     render() {
         const winner = CalculateWinner(this.state.squares);
-        this.retrieve1();
+
+        setTimeout(() => {this.retrieve(); }, 1500);
         
         let status;
         if(winner) {
@@ -141,24 +114,22 @@ class Game extends React.Component {
                 <br></br>
                 {this.buttonplayer()}
                 <br></br>
-            <div>
-                <br></br>
-                <button onClick={() => this.restart()} > Restart </button>
-                <br></br>
-
             
-            <div className="game">
-                <div className="game-board">
-                <Board 
-                    squares={this.state.squares}
-                    onClick={(i) => this.handleClick(i)}    
-                />
+                <div className="game">
+                    <div className="game-board">
+                    <Board 
+                        squares={this.state.squares}
+                        onClick={(i) => this.handleClick(i)}    
+                    />
+                    </div>
+                    <div className="game-info">
+                        <div>{status}</div>
+                        <br></br>
+                        <div>
+                            <button onClick={() => this.restart()} > Restart </button>
+                        </div>
+                    </div>
                 </div>
-                <div className="game-info">
-                <div>{status}</div>
-                </div>
-            </div>
-            </div>
             </div>
         );
     }
