@@ -18,9 +18,8 @@ class Game extends React.Component {
     
     updatedb(next){
         var data = {
-            history: JSON.stringify(Array(9).fill(null)),
             history: JSON.stringify(this.state.squares),
-            stepnumber: this.state.stepNumber,
+            stepnumber: this.state.stepNumber + 1,
             xisnext: next
         }
         XODataService.update(data);
@@ -78,6 +77,7 @@ class Game extends React.Component {
             xisnext: true
         }
         XODataService.update(data);
+        this.retrieve()
     }
 
     retrieve() {
@@ -100,7 +100,8 @@ class Game extends React.Component {
     render() {
         const winner = CalculateWinner(this.state.squares);
 
-        setTimeout(() => {this.retrieve(); }, 1500);
+        if(this.state.player != this.state.xIsNext)
+            this.retrieve()
         
         let status;
         if(winner) {
