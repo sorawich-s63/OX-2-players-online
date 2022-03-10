@@ -49,14 +49,18 @@ class Game extends React.Component {
     }
 
     checkData(newStep,newhistory){
-        console.log(this.state.stepNumber);
-        console.log(newStep);
+        // console.log(this.state.stepNumber);
+        // console.log(newStep);
+        // console.log(this.state.squares);
+        // console.log(newhistory);
 
         const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]); //check duplicate array
         
         if((this.state.stepNumber < newStep) || (equals(this.state.squares, newhistory))){
+            console.log("true");
             return true
         }else{
+            console.log("false");
             return false
         }
         
@@ -113,7 +117,7 @@ class Game extends React.Component {
         XODataService.getAll()
             .then(response => {
                 const alldata = response.data
-                if(this.checkData(parseInt(alldata.stepnumber)),JSON.parse(alldata.history)){
+                if(this.checkData(parseInt(alldata.stepnumber),alldata.history)){
                     console.log("setState");
                     this.setState({
                         squares: JSON.parse(alldata.history),
@@ -129,6 +133,7 @@ class Game extends React.Component {
                     });
                 }else{
                     console.log("not setState");
+                    setTimeout(() => {this.retrieve(); }, 1500);
                 }
             })
 
@@ -141,8 +146,7 @@ class Game extends React.Component {
     render() {
         const winner = CalculateWinner(this.state.squares);
 
-        // setTimeout(() => {this.retrieve(); }, 1500);
-        this.retrieve();
+        setTimeout(() => {this.retrieve(); }, 1500);
         
         let status;
         if(winner) {
