@@ -6,5 +6,6 @@ module.exports = app => {
     router.get("/", xo.findOne);
     router.put("/", xo.update);
 
+
     app.use('/api/xo', router);
 };

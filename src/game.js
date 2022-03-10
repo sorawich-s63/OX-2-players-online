@@ -20,7 +20,7 @@ class Game extends React.Component {
         var data = {
             history: JSON.stringify(Array(9).fill(null)),
             history: JSON.stringify(this.state.squares),
-            stepnumber: this.state.stepNumber,
+            stepnumber: this.state.stepNumber + 1,
             xisnext: next
         }
         XODataService.update(data);
@@ -48,6 +48,28 @@ class Game extends React.Component {
         }
     }
 
+    checkData(newStep,newhistory){
+        console.log(this.state.stepNumber);
+        console.log(newStep);
+
+        const equals = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]); //check duplicate array
+        
+        if((this.state.stepNumber < newStep) || (equals(this.state.squares, newhistory))){
+            return true
+        }else{
+            return false
+        }
+        
+    }
+
+    checkRestart(newStep){
+        if(this.state.stepNumber > newStep){
+            return true
+        }else{
+            return false
+        }
+    }
+
     setplayer(i) {
         this.setState({
             player : i 
@@ -72,6 +94,11 @@ class Game extends React.Component {
     }
 
     restart() {
+        this.setState({
+            squares: Array(9).fill(null),
+            stepNumber: 0,
+            xIsNext: true 
+        });
         var data = {
             history: JSON.stringify(Array(9).fill(null)),
             stepnumber: 0,
@@ -80,17 +107,31 @@ class Game extends React.Component {
         XODataService.update(data);
     }
 
+    
     retrieve() {
-        console.log("hi")
+        // console.log("hi")
         XODataService.getAll()
             .then(response => {
                 const alldata = response.data
-                this.setState({
-                    squares: JSON.parse(alldata.history),
-                    stepNumber: parseInt(alldata.stepnumber),
-                    xIsNext: alldata.xisnext
-                });
+                if(this.checkData(parseInt(alldata.stepnumber)),JSON.parse(alldata.history)){
+                    console.log("setState");
+                    this.setState({
+                        squares: JSON.parse(alldata.history),
+                        stepNumber: parseInt(alldata.stepnumber),
+                        xIsNext: alldata.xisnext
+                    });
+                }else if(this.checkRestart(alldata.stepnumber)){
+                    console.log("Restart!");
+                    this.setState({
+                        squares: Array(9).fill(null),
+                        stepNumber: 0,
+                        xIsNext: true 
+                    });
+                }else{
+                    console.log("not setState");
+                }
             })
+
             
             .catch(e => {
                 console.log(e);
@@ -100,7 +141,8 @@ class Game extends React.Component {
     render() {
         const winner = CalculateWinner(this.state.squares);
 
-        setTimeout(() => {this.retrieve(); }, 1500);
+        // setTimeout(() => {this.retrieve(); }, 1500);
+        this.retrieve();
         
         let status;
         if(winner) {
@@ -108,6 +150,7 @@ class Game extends React.Component {
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
+
         return (
             <div>
                 <label>SELECT PLAYER</label>
